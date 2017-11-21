@@ -61,7 +61,7 @@ The grafana service requires some minimal setup to start pulling the data in fro
 
 First login with admin:admin.
 
-Then in the main menu (upper right corner grafana logo), select "Data Source"
+Then in the main menu (upper left corner grafana logo), select "Data Source"
 
 Click "+ Add data source" input the following:
 
