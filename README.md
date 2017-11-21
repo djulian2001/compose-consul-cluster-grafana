@@ -53,10 +53,18 @@ Click "+ Add data source" input the following:
 
 Click the "Add" button.
 
-That should be it.
+That should be it.  Oh wait... clean up
 
+Clean up:
+--------------
+As this is just a learning development enviornment, I use the following commands to clean up:
+	
+	# within the directory with the docker-compose.yml file
+	docker-compose stop
+	docker-compose rm -v --force
+	
 
 Usage and learning:
 --------------
 Please feel free to share your thoughts, recommendations for improvements, and ideas
-for adding analysis within prometheus.
+for adding analysis within prometheus and grafana.
