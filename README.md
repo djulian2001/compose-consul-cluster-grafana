@@ -16,8 +16,22 @@ Run the following commands to build and bring up the cluster:
 
     docker-compose up
 
+A few things to note about the consul cluster networking.
 
-In a web browser you should beable to access the following services at:
+	# The consul cluster uses a private network, 192.168.99.0/24.
+	# If you have used this network recently then this cluster will most likely fail.
+
+	# The first consul_1 server agent has a bind ip address of 192.168.99.2 (not my favorite approach)
+	# the rest of the consul servers, and other services, are dependent on this ip address.
+	# To solve this issue you can do the following: (if you are ok with removing your unused networks)
+	
+	docker network prune
+
+	# or ... run the cluster and get the ip address that the xxx_consul_1_1 is assigned and replace all
+	#	192.168.99.2 with the new ip address, re-build the cluster and run, it should work.
+
+
+When the consul agents start gossiping, with a web browser you should beable to access the following services
 
 prometheus:
 --------------
