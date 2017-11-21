@@ -1,0 +1,44 @@
+---
+global:
+  scrape_interval:      15s
+  evaluation_interval:  15s
+  scrape_timeout:       10s  # default value
+
+  # attach external labeling
+  # external_labels:
+  #   monitor: "this-projects-global-identifier-label"
+
+# alerting managers ( the evil service that wakes up ops? )
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      # - alertmanager:9093 # this would be prom/alertmanager container
+
+# the rules
+# note: look into where you inject these rules
+rule_files:
+  # reference rules example: 
+  #   https://github.com/vegasbrianc/prometheus/blob/version-2/prometheus/alert.rules
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  # adding prometheus 'self'scrape, 
+  # add labels for down stream metrics, output format to grafana? 
+  - job_name: "prometheus"
+  # add the other labels here:
+  # - job_name: "grafana"
+  - job_name: "consul"
+
+  # can override global settings
+  # scrape_interval: 5s
+
+  # scraper settings, when would I change these?
+  # metrics_path: "/metrics" # default, 
+  # scheme: "http" # default
+
+    static_configs:
+      # - targets: ["localhost:9090"]
+    # - targets: ["localhost:9090","docker.for.mac.localhost:9107"]  # this works but there has to be a better way
+    - targets: ["localhost:9090","consul_metrics:9107"]  # there is! Worked, container_name, probably still a better way, dns?

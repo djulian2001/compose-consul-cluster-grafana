@@ -1,0 +1,159 @@
+---
+# goals:
+#   - setup 5 consul server agents
+#     - with checks
+#   - prometheus service
+#   - prometheus consul-exporter service
+#   - grafana service to 
+
+version: "3"
+
+networks:
+  host_consul:
+    driver: overlay
+    ipam:
+      config:
+        - subnet: 192.168.99.0/24
+
+volumes:
+  consul_1_data: {}
+  consul_2_data: {}
+  consul_3_data: {}
+  consul_4_data: {}
+  consul_5_data: {}
+  prometheus_data: {}
+  grafana_data: {}
+
+services:
+  consul_1:
+    build: ./consul
+    networks:
+      - host_consul
+    volumes:
+      - consul_1_data:/consul/data
+    command:
+      - "agent"
+      - "-ui"
+      - "-server"
+      - "-bootstrap-expect=3"
+      - "-client=0.0.0.0"
+      - "-enable-script-checks"
+      - "-log-level=debug"
+      - "-config-dir=/consul/config"
+      - "-bind=192.168.99.3"
+      - "-advertise=192.168.99.3"
+
+  consul_2:
+    build: ./consul
+    networks:
+      - host_consul
+    depends_on:
+      - consul_1
+    volumes:
+      - consul_2_data:/consul/data
+    command:
+      - "agent"
+      - "-ui"
+      - "-server"
+      - "-client=0.0.0.0"
+      - "-enable-script-checks"
+      - "-log-level=debug"
+      - "-config-dir=/consul/config"
+      - "-join=192.168.99.3"
+      - "-retry-join=192.168.99.3"
+  
+  consul_3:
+    build: ./consul
+    networks:
+      - host_consul
+    depends_on:
+      - consul_2
+    volumes:
+      - consul_3_data:/consul/data
+    command:
+      - "agent"
+      - "-ui"
+      - "-server"
+      - "-enable-script-checks"
+      - "-log-level=debug"
+      - "-config-dir=/consul/config"
+      - "-join=192.168.99.3"
+      - "-retry-join=192.168.99.3"
+
+  consul_4:
+    build: ./consul
+    networks:
+      - host_consul
+    depends_on:
+      - consul_2
+    volumes:
+      - consul_4_data:/consul/data
+    command:
+      - "agent"
+      - "-ui"
+      - "-server"
+      - "-enable-script-checks"
+      - "-log-level=debug"
+      - "-config-dir=/consul/config"
+      - "-join=192.168.99.3"
+      - "-retry-join=192.168.99.3"
+
+  consul_5:
+    build: ./consul
+    networks:
+      - host_consul
+    depends_on:
+      - consul_2
+    volumes:
+      - consul_5_data:/consul/data
+    command:
+      - "agent"
+      - "-ui"
+      - "-server"
+      - "-enable-script-checks"
+      - "-log-level=debug"
+      - "-config-dir=/consul/config"
+      - "-join=192.168.99.3"
+      - "-retry-join=192.168.99.3"
+
+  consul_exporter:
+    image: prom/consul-exporter
+    container_name: consul_metrics
+    networks:
+      - host_consul
+    depends_on:
+      - consul_1
+    labels:
+      - "consul.metrics=Consul Cluster Metrics"
+    ports:
+      - 9107:9107
+    command:
+      - "-consul.server=192.168.99.3:8500"
+      # - "-web.telemetry-path=consul.metrics/metrics"
+
+  prometheus:
+    build: ./prometheus
+    networks:
+      - host_consul
+    links:
+      - consul_exporter
+    volumes:
+      - prometheus_data:/prometheus
+    ports:
+      - 9090:9090
+
+  grafana:
+    image: grafana/grafana
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=safewordhere
+    # env_file:
+    #   - config.monitoring
+
+# research notes:
+# https://github.com/vegasbrianc/prometheus/blob/version-2/docker-compose.yml
