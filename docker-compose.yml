@@ -40,8 +40,8 @@ services:
       - "-enable-script-checks"
       - "-log-level=debug"
       - "-config-dir=/consul/config"
-      - "-bind=192.168.99.3"
-      - "-advertise=192.168.99.3"
+      - "-bind=192.168.99.2"
+      - "-advertise=192.168.99.2"
 
   consul_2:
     build: ./consul
@@ -59,8 +59,8 @@ services:
       - "-enable-script-checks"
       - "-log-level=debug"
       - "-config-dir=/consul/config"
-      - "-join=192.168.99.3"
-      - "-retry-join=192.168.99.3"
+      - "-join=192.168.99.2"
+      - "-retry-join=192.168.99.2"
   
   consul_3:
     build: ./consul
@@ -77,8 +77,8 @@ services:
       - "-enable-script-checks"
       - "-log-level=debug"
       - "-config-dir=/consul/config"
-      - "-join=192.168.99.3"
-      - "-retry-join=192.168.99.3"
+      - "-join=192.168.99.2"
+      - "-retry-join=192.168.99.2"
 
   consul_4:
     build: ./consul
@@ -95,8 +95,8 @@ services:
       - "-enable-script-checks"
       - "-log-level=debug"
       - "-config-dir=/consul/config"
-      - "-join=192.168.99.3"
-      - "-retry-join=192.168.99.3"
+      - "-join=192.168.99.2"
+      - "-retry-join=192.168.99.2"
 
   consul_5:
     build: ./consul
@@ -113,8 +113,8 @@ services:
       - "-enable-script-checks"
       - "-log-level=debug"
       - "-config-dir=/consul/config"
-      - "-join=192.168.99.3"
-      - "-retry-join=192.168.99.3"
+      - "-join=192.168.99.2"
+      - "-retry-join=192.168.99.2"
 
   consul_exporter:
     image: prom/consul-exporter
@@ -128,7 +128,7 @@ services:
     ports:
       - 9107:9107
     command:
-      - "-consul.server=192.168.99.3:8500"
+      - "-consul.server=192.168.99.2:8500"
       # - "-web.telemetry-path=consul.metrics/metrics"
 
   prometheus:
