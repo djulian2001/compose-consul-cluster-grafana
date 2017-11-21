@@ -38,6 +38,8 @@ prometheus:
 Adding data analysis steps to this service will have to be a future set of tasks.
 
 	http://localhost:9090
+![screen shot 2017-11-21 at 9 31 01 am](https://user-images.githubusercontent.com/27034956/33085873-4149ae98-cea3-11e7-8897-9210c55bdadf.png)
+
 
 consul_exporter:
 --------------
@@ -48,6 +50,10 @@ grafana:
 --------------
 
 	http://localhost:3000
+
+<img width="956" alt="screen shot 2017-11-21 at 9 52 54 am" src="https://user-images.githubusercontent.com/27034956/33085948-6d0afde8-cea3-11e7-9bbc-dbcf1f9da440.png">
+
+
 
 Grafana Setup:
 --------------
